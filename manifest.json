@@ -1,11 +1,11 @@
 {
-	"id": "sample-plugin",
-	"name": "Sample Plugin",
+	"id": "obsidian-tag-generator",
+	"name": "Obsidian Tag Generator",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This is a sample plugin for Obsidian. This plugin demonstrates some of the capabilities of the Obsidian API.",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
+	"description": "Breakdown nested tags into mulitple parent tags",
+	"author": "Hananoshika Yomaru",
+	"authorUrl": "https://yomaru.dev",
+	"fundingUrl": "https://www.buymeacoffee.com/yomaru",
 	"isDesktopOnly": false
 }
