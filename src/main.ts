@@ -1,4 +1,9 @@
-import { MarkdownView, Plugin } from "obsidian";
+import {
+	MarkdownView,
+	Plugin,
+	parseFrontMatterEntry,
+	parseYaml,
+} from "obsidian";
 import { IgnoreTypes, ignoreListOfTypes } from "./utils/ignore-types";
 import { matchTagRegex } from "./utils/regex";
 import {
@@ -29,9 +34,13 @@ export default class MyPlugin extends Plugin {
 
 				if (editor) {
 					const oldText = editor.getValue();
-
 					const yaml = getYAMLText(oldText);
-					if (yaml && getYamlSectionValue(yaml, YamlKey.IGNORE)) {
+
+					if (
+						yaml &&
+						// getYamlSectionValue(yaml, YamlKey.IGNORE) === "true"
+						parseYaml(yaml)[YamlKey.IGNORE]
+					) {
 						return;
 					}
 
