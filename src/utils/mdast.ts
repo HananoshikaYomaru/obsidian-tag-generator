@@ -107,52 +107,6 @@ export function getPositions(type: MDAstTypes, text: string): Position[] {
 	return positions;
 }
 
-// mdast helper methods
-
-function removeFootnotesAndDoAnActionThem(
-	positions: Position[],
-	text: string,
-	footnotes: string[],
-	action: (
-		text: string,
-		footnote: string,
-		startOfFootnoteReferenceSearch: number
-	) => void
-) {
-	for (const position of positions) {
-		const footnote = text.substring(
-			position.start.offset,
-			position.end.offset
-		);
-		footnotes.push(footnote);
-		// Remove the newline after the footnote if it exists
-		if (
-			position.end.offset < text.length &&
-			text[position.end.offset] === "\n"
-		) {
-			text =
-				text.substring(0, position.end.offset) +
-				text.substring(position.end.offset + 1);
-		}
-		// Remove the newline after the footnote if it exists
-		if (
-			position.end.offset < text.length &&
-			text[position.end.offset] === "\n"
-		) {
-			text =
-				text.substring(0, position.end.offset) +
-				text.substring(position.end.offset + 1);
-		}
-		text =
-			text.substring(0, position.start.offset) +
-			text.substring(position.end.offset);
-
-		action(text, footnote, position.start.offset);
-	}
-
-	return text;
-}
-
 /**
  * Makes sure that the style of either strong or emphasis is consistent.
  * @param {string} text The text to style either the strong or emphasis in a consistent manner
