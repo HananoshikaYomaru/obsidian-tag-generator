@@ -8,6 +8,8 @@ import {
 	PluginSettingTab,
 	Setting,
 } from "obsidian";
+import { IgnoreTypes, ignoreListOfTypes } from "./utils/ignore-types";
+import { matchTagRegex } from "./utils/regex";
 
 // Remember to rename these classes and interfaces!
 
@@ -99,7 +101,30 @@ export default class MyPlugin extends Plugin {
 
 		if (typeof save === "function") {
 			saveCommandDefinition.callback = () => {
-				console.log("this works");
+				// get the tags of the current file
+				const editor =
+					this.app.workspace.getActiveViewOfType(
+						MarkdownView
+					)?.editor;
+
+				if (editor) {
+					const text = editor.getValue();
+					let tags: string[];
+
+					// need to ignore YAML when getting regex matches to avoid improper matches with YAML contents
+					// https://github.com/platers/obsidian-linter/issues/661
+					const newText = ignoreListOfTypes(
+						[IgnoreTypes.yaml],
+						text,
+						(text) => {
+							tags = matchTagRegex(text);
+
+							return text;
+						}
+					);
+
+					console.log({ tags, newText });
+				}
 			};
 		}
 	}
