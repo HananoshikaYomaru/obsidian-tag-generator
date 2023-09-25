@@ -4,9 +4,9 @@
 	"description": "Breakdown nested tags into multiple parent tags",
 	"main": "main.js",
 	"scripts": {
-		"dev": "node esbuild.config.mjs",
-		"build": "tsc -noEmit -skipLibCheck && node esbuild.config.mjs production",
-		"version": "node version-bump.mjs && git add manifest.json versions.json"
+		"dev": "bun esbuild.config.mjs",
+		"build": "tsc -noEmit && bun esbuild.config.mjs production",
+		"version": "bun version-bump.mjs && git add manifest.json versions.json"
 	},
 	"keywords": [
 		"obsidian",
@@ -15,7 +15,9 @@
 		"plugin",
 		"markdown",
 		"yaml",
-		"frontmatter"
+		"frontmatter",
+		"typescript",
+		"bun"
 	],
 	"author": "",
 	"license": "MIT",
@@ -30,7 +32,7 @@
 		"obsidian": "latest",
 		"ts-unused-exports": "^10.0.1",
 		"tslib": "2.4.0",
-		"typescript": "4.7.4"
+		"typescript": "^5.1.3"
 	},
 	"dependencies": {
 		"diff-match-patch": "^1.0.5",

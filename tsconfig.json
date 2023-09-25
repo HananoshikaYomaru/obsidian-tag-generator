@@ -11,8 +11,10 @@
 		"importHelpers": true,
 		"isolatedModules": true,
 		"strictNullChecks": false,
-
-		"lib": ["DOM", "ES5", "ES6", "ES7", "ESNext"]
+		"skipLibCheck": true,
+		"lib": ["DOM", "ES5", "ES6", "ES7", "ESNext"],
+		"types": []
 	},
-	"include": ["**/*.ts"]
+	"include": ["**/*.ts"],
+	"exclude": ["node_modules"]
 }
