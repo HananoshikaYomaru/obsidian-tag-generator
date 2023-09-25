@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-tag-generator",
 	"name": "Obsidian Tag Generator",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"minAppVersion": "0.15.0",
 	"description": "Breakdown nested tags into multiple parent tags",
 	"author": "Hananoshika Yomaru",

@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-tag-generator",
-	"version": "1.0.1",
+	"version": "1.0.2",
 	"description": "Breakdown nested tags into multiple parent tags",
 	"main": "main.js",
 	"scripts": {
