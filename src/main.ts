@@ -69,6 +69,8 @@ export default class MyPlugin extends Plugin {
 						.filter((tag, index, self) => {
 							return self.indexOf(tag) === index;
 						})
+						// if the tag is already in the file, remove it
+						.filter((tag) => !tags.includes(tag))
 						.sort();
 
 					if (newGeneratedTags.length === 0) {
