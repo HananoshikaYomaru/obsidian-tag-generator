@@ -7,7 +7,7 @@ import {
 	createNewText,
 	writeFile,
 } from "./getTagsFromGeneratedText";
-import { getYAMLText, getYamlSectionValue } from "./utils/yaml";
+import { getYAMLText, getYamlSectionValue, hasYaml } from "./utils/yaml";
 
 enum YamlKey {
 	IGNORE = "tag-gen-ignore",
@@ -31,8 +31,12 @@ export default class MyPlugin extends Plugin {
 					const oldText = editor.getValue();
 
 					// if the file is ignored, do nothing
+					const { hasFrontMatter } = hasYaml(oldText);
 					const yaml = getYAMLText(oldText);
-					if (getYamlSectionValue(yaml, YamlKey.IGNORE)) {
+					if (
+						hasFrontMatter &&
+						getYamlSectionValue(yaml, YamlKey.IGNORE)
+					) {
 						return;
 					}
 

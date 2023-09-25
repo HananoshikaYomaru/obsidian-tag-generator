@@ -91,6 +91,17 @@ export function removeYamlSection(yaml: string, rawKey: string): string {
 	return result;
 }
 
+/**
+ * Returns whether or not the text provided has YAML front matter.
+ */
+export function hasYaml(text: string) {
+	const parts = text.split(/^---$/m);
+	return {
+		parts,
+		hasFrontMatter: parts.length > 1,
+	};
+}
+
 export function loadYAML(yaml_text: string): any {
 	if (yaml_text == null) {
 		return null;

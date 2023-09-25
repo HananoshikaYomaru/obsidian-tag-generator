@@ -1,6 +1,7 @@
 import { Editor } from "obsidian";
 import { diff_match_patch, DIFF_INSERT, DIFF_DELETE } from "diff-match-patch";
 import dedent from "ts-dedent";
+import { hasYaml, loadYAML } from "./utils/yaml";
 
 const generatedTagsRegex =
 	/%% generate tags start %%([\s\S]*?)%% generate tags end %%/gm;
@@ -39,6 +40,7 @@ export function breakdownTag(tag: string) {
 
 	return tags;
 }
+
 export function createNewText(oldText: string, generatedTags: string[]) {
 	const generatedText = generateText(generatedTags);
 	// look for the generated text in the file, if it exists, replace it, otherwise add it below the front matter
@@ -47,17 +49,16 @@ export function createNewText(oldText: string, generatedTags: string[]) {
 		generatedText
 	);
 
-	const parts = oldText.split(/^---$/m);
-	const frontmatter = parts[1].trim();
-	const body = parts[2].trim();
+	if (firstTryReplaceResult.includes(generatedText)) {
+		return firstTryReplaceResult;
+	}
 
-	const newBody = `${generatedText}\n\n${body}`;
-
-	// Write the updated content back to the file
-	const newContent = `---\n${frontmatter}\n---\n\n${newBody}`;
-	return firstTryReplaceResult.includes(generatedText)
-		? firstTryReplaceResult
-		: newContent;
+	const { parts, hasFrontMatter } = hasYaml(oldText);
+	if (hasFrontMatter) {
+		const newBody = `${generatedText}\n\n${parts[2].trim()}`;
+		return `---\n${parts[1].trim()}\n---\n\n${newBody}`;
+	}
+	return `${generatedText}\n\n${oldText}`;
 }
 export function writeFile(editor: Editor, oldText: string, newText: string) {
 	const dmp = new diff_match_patch();
