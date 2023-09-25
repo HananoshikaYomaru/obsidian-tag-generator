@@ -1,7 +1,7 @@
 {
 	"id": "tag-breakdown-generator",
 	"name": "Tag Breakdown Generator",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"minAppVersion": "0.15.0",
 	"description": "Breakdown nested tags into multiple parent tags",
 	"author": "Hananoshika Yomaru",
