@@ -30,13 +30,8 @@ export default class MyPlugin extends Plugin {
 				if (editor) {
 					const oldText = editor.getValue();
 
-					// if the file is ignored, do nothing
-					const { hasFrontMatter } = hasYaml(oldText);
 					const yaml = getYAMLText(oldText);
-					if (
-						hasFrontMatter &&
-						getYamlSectionValue(yaml, YamlKey.IGNORE)
-					) {
+					if (yaml && getYamlSectionValue(yaml, YamlKey.IGNORE)) {
 						return;
 					}
 

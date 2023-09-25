@@ -1,7 +1,7 @@
 import { Editor } from "obsidian";
 import { diff_match_patch, DIFF_INSERT, DIFF_DELETE } from "diff-match-patch";
 import dedent from "ts-dedent";
-import { hasYaml, loadYAML } from "./utils/yaml";
+import { getYAMLText, hasYaml, loadYAML } from "./utils/yaml";
 
 const generatedTagsRegex =
 	/%% generate tags start %%([\s\S]*?)%% generate tags end %%/gm;
@@ -53,10 +53,12 @@ export function createNewText(oldText: string, generatedTags: string[]) {
 		return firstTryReplaceResult;
 	}
 
-	const { parts, hasFrontMatter } = hasYaml(oldText);
-	if (hasFrontMatter) {
+	const yaml = getYAMLText(oldText);
+	if (yaml) {
+		// get the body below the front matter
+		const parts = oldText.split(/^---$/m);
 		const newBody = `${generatedText}\n\n${parts[2].trim()}`;
-		return `---\n${parts[1].trim()}\n---\n\n${newBody}`;
+		return `---\n${yaml}---\n\n${newBody}`;
 	}
 	return `${generatedText}\n\n${oldText}`;
 }
