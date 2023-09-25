@@ -15,17 +15,17 @@ enum YamlKey {
 
 export default class MyPlugin extends Plugin {
 	private eventRefs: EventRef[] = [];
+	private previousSaveCommand: () => void;
 
 	registerEventsAndSaveCallback() {
 		const saveCommandDefinition =
 			this.app.commands.commands["editor:save-file"];
-		const save = saveCommandDefinition.callback;
+		this.previousSaveCommand = saveCommandDefinition.callback;
 
-		if (typeof save === "function") {
+		if (typeof this.previousSaveCommand === "function") {
 			saveCommandDefinition.callback = () => {
 				// run the previous save command
-				save();
-				// run the previous save command
+				this.previousSaveCommand();
 				// get the tags of the current file
 				const editor =
 					this.app.workspace.getActiveViewOfType(
@@ -94,9 +94,16 @@ export default class MyPlugin extends Plugin {
 		this.registerEventsAndSaveCallback();
 	}
 
+	unregisterEventsAndSaveCallback() {
+		const saveCommandDefinition =
+			this.app.commands.commands["editor:save-file"];
+		saveCommandDefinition.callback = this.previousSaveCommand;
+	}
+
 	onunload() {
 		for (const eventRef of this.eventRefs) {
 			this.app.workspace.offref(eventRef);
 		}
+		this.unregisterEventsAndSaveCallback();
 	}
 }
