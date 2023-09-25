@@ -25,6 +25,13 @@ demo: https://www.youtube.com/watch?v=8M2VLRibpnQ
 3. `cd obsidian-tag-generator && bun install && bun run build`
 4. there you go 🎉
 
+### Update
+
+1. cd to `.obsidian/plugins/obsidian-tag-generator`
+2. `git pull`
+3. `bun install && bun run build`
+4. there you go 🎉
+
 ## Notes
 
 1. This plugins only work for tags in the body. Tags in the frontmatter will be ignored.
