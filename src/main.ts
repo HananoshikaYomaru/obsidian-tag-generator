@@ -1,9 +1,4 @@
-import {
-	MarkdownView,
-	Plugin,
-	parseFrontMatterEntry,
-	parseYaml,
-} from "obsidian";
+import { MarkdownView, Plugin, parseYaml } from "obsidian";
 import { IgnoreTypes, ignoreListOfTypes } from "./utils/ignore-types";
 import { matchTagRegex } from "./utils/regex";
 import {
@@ -12,7 +7,7 @@ import {
 	createNewText,
 	writeFile,
 } from "./getTagsFromGeneratedText";
-import { getYAMLText, getYamlSectionValue, hasYaml } from "./utils/yaml";
+import { getYAMLText } from "./utils/yaml";
 
 enum YamlKey {
 	IGNORE = "tag-gen-ignore",
