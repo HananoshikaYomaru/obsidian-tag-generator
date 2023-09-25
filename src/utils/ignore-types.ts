@@ -14,7 +14,6 @@ import {
 } from "./regex";
 import {
 	getAllCustomIgnoreSectionsInText,
-	getAllTablesInText,
 	getPositions,
 	MDAstTypes,
 } from "./mdast";
@@ -105,7 +104,6 @@ export const IgnoreTypes: Record<string, IgnoreType> = {
 		placeholder: "{REGULAR_LINK_PLACEHOLDER}",
 	},
 	tag: { replaceAction: replaceTags, placeholder: "#tag-placeholder" },
-	table: { replaceAction: replaceTables, placeholder: "{TABLE_PLACEHOLDER}" },
 	customIgnore: {
 		replaceAction: replaceCustomIgnore,
 		placeholder: "{CUSTOM_IGNORE_PLACEHOLDER}",
@@ -306,28 +304,6 @@ function replaceTags(text: string, placeholder: string): IgnoreResults {
 	});
 
 	return { newText: text, replacedValues: replacedValues };
-}
-
-function replaceTables(text: string, tablePlaceholder: string): IgnoreResults {
-	const tablePositions = getAllTablesInText(text);
-
-	const replacedTables: string[] = new Array(tablePositions.length);
-	let index = 0;
-	const length = replacedTables.length;
-	for (const tablePosition of tablePositions) {
-		replacedTables[length - 1 - index++] = text.substring(
-			tablePosition.startIndex,
-			tablePosition.endIndex
-		);
-		text = replaceTextBetweenStartAndEndWithNewValue(
-			text,
-			tablePosition.startIndex,
-			tablePosition.endIndex,
-			tablePlaceholder
-		);
-	}
-
-	return { newText: text, replacedValues: replacedTables };
 }
 
 function replaceCustomIgnore(

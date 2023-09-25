@@ -1,4 +1,3 @@
-import { getAllTablesInText } from "./mdast";
 import { makeSureContentHasEmptyLinesAddedBeforeAndAfter } from "./strings";
 
 // Useful regexes
@@ -99,28 +98,6 @@ export function removeSpacesInWikiLinkText(text: string): string {
 				text = text.replace(link, newLink);
 			}
 		}
-	}
-
-	return text;
-}
-
-/**
- * Makes sure to add a blank line before and after tables except before a table that is on the first line of the text.
- * @param {string} text The text to make sure it has an empty line before and after tables
- * @return {string} The text with an empty line before and after tables unless the table starts off the file
- */
-export function ensureEmptyLinesAroundTables(text: string): string {
-	const tablePositions = getAllTablesInText(text);
-	if (tablePositions.length === 0) {
-		return text;
-	}
-
-	for (const tablePosition of tablePositions) {
-		text = makeSureContentHasEmptyLinesAddedBeforeAndAfter(
-			text,
-			tablePosition.startIndex,
-			tablePosition.endIndex
-		);
 	}
 
 	return text;
