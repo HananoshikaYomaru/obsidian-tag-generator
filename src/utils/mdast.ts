@@ -82,10 +82,12 @@ export function getPositions(type: MDAstTypes, text: string): Position[] {
 	const ast = parseTextToAST(text);
 	const positions: Position[] = [];
 	visit(ast, type as string, (node) => {
+		// @ts-ignore
 		positions.push(node.position);
 	});
 
 	// Sort positions by start position in reverse order
+	// @ts-ignore
 	positions.sort((a, b) => b.start.offset - a.start.offset);
 	return positions;
 }
@@ -93,8 +95,6 @@ export function getPositions(type: MDAstTypes, text: string): Position[] {
 export function getAllCustomIgnoreSectionsInText(
 	text: string
 ): { startIndex: number; endIndex: number }[] {
-	let iteratorIndex = 0;
-
 	const positions: { startIndex: number; endIndex: number }[] = [];
 	const startMatches = [...text.matchAll(customIgnoreAllStartIndicator)];
 	if (!startMatches || startMatches.length === 0) {
@@ -103,13 +103,16 @@ export function getAllCustomIgnoreSectionsInText(
 
 	const endMatches = [...text.matchAll(customIgnoreAllEndIndicator)];
 
+	let iteratorIndex = 0;
 	startMatches.forEach((startMatch) => {
+		// @ts-ignore
 		iteratorIndex = startMatch.index;
 
 		let foundEndingIndicator = false;
 		let endingPosition = text.length - 1;
 		// eslint-disable-next-line no-unmodified-loop-condition -- endMatches does not need to be modified with regards to being undefined or null
 		while (endMatches && endMatches.length !== 0 && !foundEndingIndicator) {
+			// @ts-ignore
 			if (endMatches[0].index <= iteratorIndex) {
 				endMatches.shift();
 			} else {
@@ -117,6 +120,7 @@ export function getAllCustomIgnoreSectionsInText(
 
 				const endingIndicator = endMatches[0];
 				endingPosition =
+					// @ts-ignore
 					endingIndicator.index + endingIndicator[0].length;
 			}
 		}
