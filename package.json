@@ -1,6 +1,6 @@
 {
 	"name": "tag-breakdown-generator",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"description": "Breakdown nested tags into multiple parent tags",
 	"main": "main.js",
 	"scripts": {
@@ -19,7 +19,7 @@
 		"typescript",
 		"bun"
 	],
-	"author": "",
+	"author": "Hananoshika Yomaru",
 	"license": "MIT",
 	"devDependencies": {
 		"@types/diff-match-patch": "^1.0.34",

@@ -1,7 +1,7 @@
 import { Editor } from "obsidian";
 import { diff_match_patch, DIFF_INSERT, DIFF_DELETE } from "diff-match-patch";
 import dedent from "ts-dedent";
-import { getYAMLText, hasYaml, loadYAML } from "./utils/yaml";
+import { getYAMLText } from "./utils/yaml";
 
 const generatedTagsRegex =
 	/%% generate tags start %%([\s\S]*?)%% generate tags end %%/gm;

@@ -38,3 +38,19 @@ demo: https://www.youtube.com/watch?v=8M2VLRibpnQ
 2. The generator will recognise the comment block. If the comment block doesn't exist, it will create the block at the top of the file. If it exists, it will replace the block.
 3. to skip generation of this, you can put `tag-gen-ignore: true` to the frontmatter.
 4. to contribute, please file open a github issue first.
+
+<!--
+## How to release
+
+```
+# update the version number in package.json
+bun version
+git add .
+git commit -m <message>
+git tag -a <version> -m <version>
+git push origin <version>
+git push
+# after the release workflow done, update the release doc on github
+```
+
+ -->

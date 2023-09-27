@@ -17,43 +17,36 @@ export const OBSIDIAN_ALIASES_KEYS = [
 export const LINTER_ALIASES_HELPER_KEY = "linter-yaml-title-alias";
 export const DISABLED_RULES_KEY = "disabled rules";
 
-/**
- * Adds an empty YAML block to the text if it doesn't already have one.
- * @param {string} text - The text to process
- * @return {string} The processed text with a YAML block
- */
-export function initYAML(text: string): string {
+export function initYAML(text: string) {
 	if (text.match(yamlRegex) === null) {
 		text = "---\n---\n" + text;
 	}
 	return text;
 }
 
-export function getYAMLText(text: string): string | null {
+export function getYAMLText(text: string) {
 	const yaml = text.match(yamlRegex);
 	if (!yaml) {
 		return null;
 	}
-
 	return yaml[1];
 }
 
-export function formatYAML(
-	text: string,
-	func: (text: string) => string
-): string {
+export function formatYAML(text: string, func: (text: string) => string) {
 	if (!text.match(yamlRegex)) {
 		return text;
 	}
 
-	const oldYaml = text.match(yamlRegex)[0];
+	const oldYaml = text.match(yamlRegex)?.[0];
+	if (!oldYaml) return text;
+
 	const newYaml = func(oldYaml);
 	text = text.replace(oldYaml, escapeDollarSigns(newYaml));
 
 	return text;
 }
 
-function getYamlSectionRegExp(rawKey: string): RegExp {
+function getYamlSectionRegExp(rawKey: string) {
 	return new RegExp(
 		`^([\\t ]*)${rawKey}:[ \\t]*(\\S.*|(?:(?:\\n *- \\S.*)|((?:\\n *- *))*|(\\n([ \\t]+[^\\n]*))*)*)\\n`,
 		"m"
@@ -89,17 +82,6 @@ export function getYamlSectionValue(
 export function removeYamlSection(yaml: string, rawKey: string): string {
 	const result = yaml.replace(getYamlSectionRegExp(rawKey), "");
 	return result;
-}
-
-/**
- * Returns whether or not the text provided has YAML front matter.
- */
-export function hasYaml(text: string) {
-	const parts = text.split(/^---$/m);
-	return {
-		parts,
-		hasFrontMatter: parts.length > 1,
-	};
 }
 
 export function loadYAML(yaml_text: string): any {
@@ -271,11 +253,9 @@ function convertStringArrayToMultilineArray(arrayItems: string[]): string {
 /**
  * Parses single-line and multi-line arrays into an array that can be used for formatting down the line
  * @param {string} value The value to see about parsing if it is a sing-line or multi-line array
- * @return {string|string[]} The original value if it was not a single or multi-line array or the an array of the values from the array (multi-line arrays will have empty values removed)
+ * @return The original value if it was not a single or multi-line array or the an array of the values from the array (multi-line arrays will have empty values removed)
  */
-export function splitValueIfSingleOrMultilineArray(
-	value: string
-): string | string[] {
+export function splitValueIfSingleOrMultilineArray(value: string) {
 	if (value == null || value.length === 0) {
 		return null;
 	}
@@ -294,7 +274,7 @@ export function splitValueIfSingleOrMultilineArray(
 		}
 
 		const arrayItems = convertYAMLStringToArray(value, ",");
-
+		if (!arrayItems) return null;
 		return arrayItems.filter((el: string) => {
 			return el != "";
 		});
@@ -323,9 +303,7 @@ export function splitValueIfSingleOrMultilineArray(
  * @param {string | string[]} value The value that is already good to go or needs to be split on a comma or spaces.
  * @return {string} The converted tag key value that should account for its obsidian formats.
  */
-export function convertTagValueToStringOrStringArray(
-	value: string | string[]
-): string[] {
+export function convertTagValueToStringOrStringArray(value: string | string[]) {
 	if (value == null) {
 		return [];
 	}
@@ -335,9 +313,9 @@ export function convertTagValueToStringOrStringArray(
 	if (Array.isArray(value)) {
 		originalTagValues = value;
 	} else if (value.includes(",")) {
-		originalTagValues = convertYAMLStringToArray(value, ",");
+		originalTagValues = convertYAMLStringToArray(value, ",") ?? [];
 	} else {
-		originalTagValues = convertYAMLStringToArray(value, " ");
+		originalTagValues = convertYAMLStringToArray(value, " ") ?? [];
 	}
 
 	for (const tagValue of originalTagValues) {
@@ -350,11 +328,10 @@ export function convertTagValueToStringOrStringArray(
 /**
  * Converts the alias over to the appropriate array items for formatting taking into account obsidian formats.
  * @param {string | string[]} value The value of the aliases key that may need to be split into the appropriate parts.
- * @return {string} The alias value converted to the appropriate array items for formatting.
  */
 export function convertAliasValueToStringOrStringArray(
 	value: string | string[]
-): string[] {
+) {
 	if (typeof value === "string") {
 		return convertYAMLStringToArray(value, ",");
 	}
@@ -365,7 +342,7 @@ export function convertAliasValueToStringOrStringArray(
 export function convertYAMLStringToArray(
 	value: string,
 	delimiter: string = ","
-): string[] {
+) {
 	if (value == "" || value == null) {
 		return null;
 	}

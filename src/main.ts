@@ -36,13 +36,13 @@ export default class MyPlugin extends Plugin {
 
 				const oldText = editor.getValue();
 				const yaml = getYAMLText(oldText);
-				if (
-					yaml &&
-					// getYamlSectionValue(yaml, YamlKey.IGNORE) === "true"
-					parseYaml(yaml)[YamlKey.IGNORE]
-				) {
-					return;
-				}
+				// if the YAML string exists
+				if (!yaml) return;
+				const yamlObj = parseYaml(yaml);
+				// if the YAML is empty
+				if (!yamlObj) return;
+				// if the YAML has the ignore key
+				if (yamlObj[YamlKey.IGNORE]) return;
 
 				// recognise the pattern, and get all the generated tags
 				const generatedTags = getTagsFromGeneratedText(oldText);
