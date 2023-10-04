@@ -5,15 +5,15 @@ import {
 	getTagsFromGeneratedText,
 	breakdownTag,
 	createNewText,
-	writeFile,
 } from "./getTagsFromGeneratedText";
+import { writeFile } from "./writeFile";
 import { getYAMLText } from "./utils/yaml";
 
 enum YamlKey {
 	IGNORE = "tag-gen-ignore",
 }
 
-export default class MyPlugin extends Plugin {
+export default class TagGeneratorPlugin extends Plugin {
 	private eventRefs: EventRef[] = [];
 	private previousSaveCommand: () => void;
 
@@ -23,9 +23,7 @@ export default class MyPlugin extends Plugin {
 		this.previousSaveCommand = saveCommandDefinition.callback;
 
 		if (typeof this.previousSaveCommand === "function") {
-			saveCommandDefinition.callback = () => {
-				// run the previous save command
-				this.previousSaveCommand();
+			const myAction = () => {
 				// get the tags of the current file
 				const editor =
 					this.app.workspace.getActiveViewOfType(
@@ -79,6 +77,12 @@ export default class MyPlugin extends Plugin {
 
 				const newText = createNewText(oldText, newGeneratedTags);
 				writeFile(editor, oldText, newText);
+			};
+			saveCommandDefinition.callback = () => {
+				myAction();
+
+				// run the previous save command
+				this.previousSaveCommand();
 
 				// defines the vim command for saving a file and lets the linter run on save for it
 				// accounts for https://github.com/platers/obsidian-linter/issues/19
