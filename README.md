@@ -16,7 +16,7 @@ demo: https://www.youtube.com/watch?v=8M2VLRibpnQ
 
 ## Install on obsidian plugin marketplace
 
-⏳ Still waiting for review and approval: https://github.com/obsidianmd/obsidian-releases/pull/2487
+you can download it on obsidian community plugin store. 
 
 ## Manual Install
 
