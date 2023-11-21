@@ -1,7 +1,8 @@
 import dedent from "ts-dedent";
 import { getYAMLText } from "./utils/yaml";
+import { Data } from "./utils/obsidian";
 
-const generatedTagsRegex =
+export const generatedTagsRegex =
 	/%% generate tags start %%([\s\S]*?)%% generate tags end %%/gm;
 const generateText = (tags: string[]) => {
 	return dedent`
@@ -39,7 +40,11 @@ export function breakdownTag(tag: string) {
 	return tags;
 }
 
-export function createNewText(oldText: string, generatedTags: string[]) {
+export function createNewText(
+	oldText: string,
+	data: Data,
+	generatedTags: string[]
+) {
 	const generatedText = generateText(generatedTags);
 	// look for the generated text in the file, if it exists, replace it, otherwise add it below the front matter
 	const firstTryReplaceResult = oldText.replace(
@@ -47,20 +52,24 @@ export function createNewText(oldText: string, generatedTags: string[]) {
 		generatedText
 	);
 
+	// if it is already the same, just return the old text
+	// it also mean that the generated text is already in the file
 	if (firstTryReplaceResult.includes(generatedText)) {
 		return firstTryReplaceResult;
 	}
 
-	const yaml = getYAMLText(oldText);
-	if (yaml) {
-		// get the body below the front matter
-		const parts = oldText.split(/^---$/m);
-		const newBody = `${generatedText}\n\n${parts[2].trim()}`;
+	// if the generated text is not in the file, add it below the front matter
+	if (data.yamlText) {
 		return dedent`---
-		${yaml}
+		${data.yamlText.trim()}
 		---
 		
-		${newBody}`;
+		${generatedText}
+		
+		${data.body.trim()}`;
 	}
-	return `${generatedText}\n\n${oldText}`;
+
+	return dedent`${generatedText}
+	
+	${oldText.trim()}`;
 }

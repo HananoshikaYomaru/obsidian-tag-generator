@@ -475,3 +475,23 @@ function basicEscapeString(
 	// the line must have a colon with a space
 	return `${defaultEscapeCharacter}${value}${defaultEscapeCharacter}`;
 }
+
+export const splitYamlAndBody = (markdown: string) => {
+	const parts = markdown.split(/^---$/m);
+	if (!markdown.startsWith("---") || parts.length === 1) {
+		return {
+			yaml: undefined,
+			body: markdown,
+		};
+	}
+	if (parts.length < 3) {
+		return {
+			yaml: parts[1] as string,
+			body: parts[2] ?? "",
+		};
+	}
+	return {
+		yaml: parts[1],
+		body: parts.slice(2).join("---"),
+	};
+};

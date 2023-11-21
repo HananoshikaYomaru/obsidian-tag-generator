@@ -10,13 +10,19 @@ will generate this
 #a #a/b #a/b/c #ai
 ```
 
-demo: https://www.youtube.com/watch?v=8M2VLRibpnQ
+demo: <https://www.youtube.com/watch?v=8M2VLRibpnQ>
 
-✅ dead simple, without any configuration
+✅ dead simple
+
+## Usage
+
+1. you need to install custom save plugin first
+2. then bind the `tag generator: run on current file` command to the custom save action
+3. there you go 🎉
 
 ## Install on obsidian plugin marketplace
 
-you can download it on obsidian community plugin store. 
+you can download it on obsidian community plugin store.
 
 ## Manual Install
 
