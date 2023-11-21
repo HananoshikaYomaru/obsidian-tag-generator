@@ -1,6 +1,6 @@
 {
   "name": "tag-breakdown-generator",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Breakdown nested tags into multiple parent tags",
   "main": "main.js",
   "scripts": {
